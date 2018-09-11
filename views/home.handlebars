@@ -36,7 +36,7 @@
         <form class="col-8 moveToRight" action ='/city/towns' method = 'post'>
             <p>Select Town</p>
             <select  id="townBox" name='towns' onchange="change()"> 
-                <option  value='all'>All</option>
+                <option  value='all' {{selected}}>All</option>
                 {{#each myCity}}  
                     <option value='{{town_name}}' {{selected}}>{{town_name}}</option>
                 {{/each}}   
