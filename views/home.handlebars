@@ -1,0 +1,59 @@
+<div class="header">
+    <h1>Registration Numbers</h1>
+</div>
+<div class="container">
+
+    <div class="row">
+        <div class="appInstruction col-3">
+            <p>Tips:
+                <ul>
+                    <li>Cape Town, the registration number starts with <span class="plates"><i>CA</i></span></li>
+                    <li>Bellvile, the registration number starts with <span class="plates"><i>CY</i></span></li>
+                    <li>Paarl, the registration number starts with <span class="plates"><i>CJ</i></span></li>
+                    <li>Stellenbosch, the registration number starts with <span class="plates"><i>CL</i></span></li>
+                </ul>
+            </p>
+        </div>
+        <div class="col-8">
+            <form action='/reg_numbers' method='post'>
+                <p>
+                    <span>Registration Number:<span>
+                            <input type="text" name="registration_number" class="inPutSize regNum" placeholder="Enter vehicle number plate" maxlength="11"
+                            />
+                </p>
+                <button class="button-primary" on type="submit" name="button" id="addReg">Add   </button>
+            </form>
+            <div class="">
+                <button class="button-primary" on type="button" name="button" id="reset">Reset</button>
+            </div>
+        </div>
+    </div>
+    <div class=" row displayInstruction">
+        <span id='plate'></span><span id="footer"></span>
+    </div>
+
+    <div class="row">
+        <form class="col-8 moveToRight" action ='/city/towns' method = 'post'>
+            <p>Select Town</p>
+            <select  id="townBox" name='towns' onchange="change()"> 
+                <option  value='all'>All</option>
+                {{#each myCity}}  
+                    <option value='{{town_name}}' {{selected}}>{{town_name}}</option>
+                {{/each}}   
+                {{!-- <option  value='Cape Town'>Cape Town</option>
+                <option  value='Bellville'>Bellville</option>
+                <option  value='Paarl'>Paarl</option>
+                <option  value='Stellenbosch'>Stellenbosch</option> --}}
+                {{!-- <input type = "submit" value="hidden"> --}}  
+            </select>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-8 displayReg">
+        <ul class="addHere">{{#each plates}}
+            <li>{{reg_number}}</li>
+            {{/each}}
+        </ul>
+    </div>
+</div>
