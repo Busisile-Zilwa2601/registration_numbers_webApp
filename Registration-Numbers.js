@@ -16,21 +16,24 @@ module.exports = function cityRegNum(pool){
     }
     async function add(regNum){
         let results;
-        let tag = regNum.substring(0,2);
-        if(await checkTag(tag) && await checkReg(regNum)){
-            let fId = await getID(tag);
-            results = await pool.query('insert into plates(reg_number, towns_id) values($1, $2)', [regNum, fId.id]);
-        }else{
-            results = null;
+        let tag = regNum.substring(0,3).trim().toUpperCase();
+        if(regNum.toUpperCase()){
+            if(await checkTag(tag) && await checkReg(regNum.toUpperCase())){
+                let fId = await getID(tag);
+                await pool.query('insert into plates(reg_number, towns_id) values($1, $2)', [regNum.toUpperCase(), fId.id]);
+                results = true;
+            }else{
+                results = false;
+            }
         }
         return results;
     }
     async function getID(tagInfo){
-        let results = await pool.query('select id from towns where town_code = $1', [tagInfo]);
+        let results = await pool.query('select id from towns where town_code = $1', [tagInfo.toUpperCase()]);
         return results.rows[0];
     }
     async function checkTag(tagInfo){
-        let results = await pool.query('select town_code from towns where town_code = $1', [tagInfo]);
+        let results = await pool.query('select town_code from towns where town_code = $1', [tagInfo.toUpperCase()]);
         if(results.rows.length > 0){ 
             return true;}
             else{ 
@@ -38,19 +41,41 @@ module.exports = function cityRegNum(pool){
             }
     }
     async function checkReg(regNum){
-        let results = await pool.query('select reg_number from plates where reg_number = $1', [regNum]);
+        let results = await pool.query('select reg_number from plates where reg_number = $1', [regNum.toUpperCase()]);
         if(results.rows.length > 0){
             return false;
         }else{
             return true;
         }
     }
+    async function addTown(city, tag){
+        if(await checkTown(city)){
+            await pool.query('INSERT INTO towns(town_name, town_code) values($1, $2)',[city, tag.toUpperCase()]);
+            return true;
+        }else{
+            return false;
+        }
+    }
+    async function checkTown(city){
+        let results = await pool.query('select town_name from towns where town_name =$1', [city]);
+        if(results.rows.length > 0){
+           return false;     
+        }else{
+            return true;
+        }
+    }
+    async function deleteAllReg(){
+        await pool.query('delete from plates');
+    }
+    
     return{
         all, 
         allFrom,
         add, 
         cityAll,
         checkReg,
-        checkTag
+        checkTag,
+        addTown,
+        deleteAllReg
     }
 }

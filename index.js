@@ -1,4 +1,6 @@
 //module constants
+const flash = require('express-flash');
+const session = require('express-session');
 const express = require('express');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
@@ -11,7 +13,7 @@ let app = express();
 // should we use a SSL connection
 let useSSL = false;
 let local = process.env.LOCAL || false;
-if (process.env.DATABASE_URL && !local){
+if (process.env.DATABASE_URL && !local) {
     useSSL = true;
 }
 // connection to database
@@ -19,12 +21,23 @@ let connectionString = process.env.DATABASE_URL || 'postgres://busisile:pg123@lo
 //pool constructor
 const pool = new Pool({
     connectionString,
-    ssl : useSSL
+    ssl: useSSL
 });
+// initialise session middleware - flash-express depends on it
+app.use(session({
+    secret: "Adding towns",
+    resave: false,
+    saveUninitialized: true
+}));
 
+// initialise the flash middleware
+app.use(flash());
 //default settings
 app.use(express.static('public'));
-app.engine('handlebars', exphbs({defaultLayout:'main', helpers:'helpers'}));
+app.engine('handlebars', exphbs({
+    defaultLayout: 'main',
+    helpers: 'helpers'
+}));
 app.set('view engine', 'handlebars');
 //instances
 let cityRegNum = myReg(pool);
@@ -32,14 +45,18 @@ let myRoutes = routes(cityRegNum);
 
 //using body parser
 app.use(bodyParser.urlencoded({
-	extended: false
+    extended: false
 }));
 app.use(bodyParser.json());
 
 //routes
-app.get('/',myRoutes.index);
+app.get('/', myRoutes.index);
+app.post('/city', myRoutes.displayReg);
 app.post('/reg_numbers', myRoutes.add);
-app.post('/city/:towns', myRoutes.diplayReg);
+app.get('/city', myRoutes.add);
+app.post('/add', myRoutes.addCity);
+app.post('/delete', myRoutes.deleteAll);
+
 //add the PORT
 let PORT = process.env.PORT || 3080;
 app.listen(PORT, function () {

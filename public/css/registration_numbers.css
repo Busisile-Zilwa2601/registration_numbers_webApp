@@ -55,7 +55,7 @@ html {
 
 }
 .displayInstruction{
-  padding: 7px;
+  padding: 4.5px;
   margin: 7px;
   border: 2px solid grey;
   border-radius: 5px;
@@ -63,13 +63,7 @@ html {
   top:inherit;
   max-width: 750px;
   white-space: pre-line;
-  max-height: 6rem;
-}
-.plates i{
-  background-color: silver;
-  min-width: 50px;
-  border-radius: 2.5px;
-  text-align: center;
+  min-height: 40px;
 }
 .appInstruction{
   padding: 3.5px;
@@ -79,12 +73,23 @@ html {
   text: center;
   font-family:"Times New Roman", Helvetica, cursive ,fantasy,Times, Arial;
   font-weight: 500;
-  font-size: 10px;
+  font-size: 11px;
   color: black;
 }
 .footer{
-  margin-top: 10px;
+  margin-top: 5px;
   text-align: center;
+  line-height: 20px;
+  font-size: 12px;
+}
+.fa-plus{
+  color: black;
+  font-size: 12px;
+  margin-top: 5px;
+}
+.fa-plus a{
+  float: right;
+  clear: both;
 }
 @media only screen and (min-width: 768px) {
     /* For desktop: */

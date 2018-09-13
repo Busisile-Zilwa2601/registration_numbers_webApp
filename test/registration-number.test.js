@@ -20,8 +20,9 @@ describe('The Registration-Numbers database webApp', function () {
         await reg.add('CY 930-897');
         await reg.add('CJ 230');
         await reg.add('CA 230');
-        await reg.add('CL 980');
+        await reg.add('CL 9804');
         let reg_numbs = await reg.all();
+        console.log(reg_numbs.length);
         assert.equal(reg_numbs.length, 4);
     });
     it('allFrom: Should return Cape Town registration numbers that are in the database', async function(){

@@ -1,3 +1,3 @@
 $('#townBox').change(function(){
-    $('form').submit();
+    $('.searchTownForm').submit();
 });

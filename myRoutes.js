@@ -1,10 +1,10 @@
-module.exports = function routes(cityRegNum,) {
-
+module.exports = function routes(cityRegNum) {
     //Display on screen
     async function index(req, res) {
         try {
             let plates = await cityRegNum.all();
             let myCity = await cityRegNum.cityAll();
+            req.flash('info',' ');
             res.render('home', {
                 plates,
                 myCity
@@ -13,44 +13,26 @@ module.exports = function routes(cityRegNum,) {
             console.error('Did not connect to database', err);
         }
     }
-    async function diplayReg(req, res) {
+    //diplay on town selected
+    async function displayReg(req, res) {
         let city = req.body.towns;
+        console.log(city);
         try {
             let myCity = await cityRegNum.cityAll();
+            console.log(myCity);
             if (city === 'all') {
                 let plates = await cityRegNum.all();
                 res.render('home', {
                     plates: plates,
-                    myCity:myCity,
-                    'helpers': {
-                        'selected': function () {
-                            let currentCity = {};
-                            currentCity.town_name = city;
-                            currentCity.selected = 'selected';
-                            console.log(currentCity);
-                            return currentCity.selected;
-                        }
-                    }
+                    myCity: myCity
                 });
             } else {
                 let plates = await cityRegNum.allFrom(city);
                 res.render('home', {
                     plates,
-                    myCity,
-                    'helpers': {
-                        'selected': function () {
-                            let currentCity = {};
-                            for(var i = 0; i < myCity.length; i++){
-                                if(city === myCity[i].town_name){
-                                    currentCity.town_name = myCity[i].town_name;
-                                    break;
-                                }
-                            }
-                            currentCity.selected = 'selected';
-                            console.log(currentCity);
-                            return currentCity.selected;    
-                        }
-                    }
+                    selected: selected(city, myCity),
+                    myCity
+
                 });
             }
         } catch (err) {
@@ -58,20 +40,80 @@ module.exports = function routes(cityRegNum,) {
         }
     }
     //add reg to data base
-    async function add(req, res) {
+    async function add(req, res, next) {
         let regNum = req.body.registration_number;
+        if (regNum !== '') {
+            if (regValidate(regNum)) {
+                if (await cityRegNum.checkReg(regNum)) {
+                    try {
+                        await cityRegNum.add(regNum);
+                        req.flash('info', regNum + ' Added');
+                        res.redirect('/');
+                    } catch (err) {
+                        console.error('Can not add to the database', err);
+                    }
+                } else {
+                    req.flash('info', regNum + ' already exist in the database');
+                    res.redirect('/');
+                }
+
+            } else {
+                req.flash('info', ' Invalid pattern');
+                res.redirect('/');
+            }
+        } else {
+            req.flash('info', ' Please enter a vehicle number plate');
+            res.redirect('/');
+        }
+
+    }
+    //validate
+    var regValidate = function (registration_number) {
+        var regex = /^[a-zA-Z]{2,3}(\s)(?:([0-9]{3}(\-)[0-9]{3})|([0-9]{3,5}))$/;
+        return regex.test(registration_number.toUpperCase());
+    }
+    //helper
+    function selected(city, myCity) {
+        let currentCity = {};
+        for (let i = 0; i < myCity.length; i++) {
+            if (city === myCity[i].town_name) {
+                currentCity = myCity[i];
+                currentCity.selected = 'selected';
+                break;
+            }
+        }
+        console.log(currentCity);
+        return currentCity.selected;
+    }
+    //add a town to the table towns
+    async function addCity(req, res) {
+        let tag = req.body.code;
+        let cityAdded = req.body.add_town;
         try {
-            await cityRegNum.add(regNum);
+            await cityRegNum.addTown(cityAdded, tag);
+            await cityRegNum.cityAll();
             res.redirect('/');
         } catch (err) {
-            console.error('Can not add to the database', err);
+            console.error('error accessing database', err);
         }
     }
-
+    //Delete all registration plates
+    async function deleteAll(req, res){
+        try{
+            await cityRegNum.deleteAllReg();
+            req.flash('info', 'All registration numbers have been deleted on the database');
+            res.redirect('/');
+        }catch(err){
+            console.error('Plates not deleted from database', err);
+        }    
+    }
     //functions to use
     return {
         index,
-        diplayReg,
-        add
+        displayReg,
+        add,
+        addCity,
+        deleteAll
     }
 }
+//new helper.SafeString('selected = "'+ currentCity.selected +'"');

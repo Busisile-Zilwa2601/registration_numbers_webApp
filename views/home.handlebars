@@ -1,10 +1,14 @@
 <div class="header">
-    <h1>Registration Numbers</h1>
+    <div class='row'>
+        <div class='col-md-8'>
+            <h1>Registration Numbers</h1>
+        </div>
+        <div class='col-md-4'><button data-toggle='modal' data-target='#formModal'>add towns <i class="fas fa-plus"></i></button></div>
+    </div>
 </div>
 <div class="container">
-
     <div class="row">
-        <div class="appInstruction col-3">
+        <div class="appInstruction col-md-3">
             <p>Tips:
                 <ul>
                     <li>Cape Town, the registration number starts with <span class="plates"><i>CA</i></span></li>
@@ -14,46 +18,73 @@
                 </ul>
             </p>
         </div>
-        <div class="col-8">
+        <div class="col-md-8">
             <form action='/reg_numbers' method='post'>
                 <p>
                     <span>Registration Number:<span>
-                            <input type="text" name="registration_number" class="inPutSize regNum" placeholder="Enter vehicle number plate" maxlength="11"
-                            />
+                            <input type="text" name="registration_number" class="inPutSize regNum" placeholder="Enter vehicle number plate"
+                                maxlength="11" />
                 </p>
-                <button class="button-primary" on type="submit" name="button" id="addReg">Add   </button>
+                <button class="button-primary" type="submit" name="button" id="addReg">Add </button>
             </form>
+            <form action='/delete' method = 'post'>
             <div class="">
-                <button class="button-primary" on type="button" name="button" id="reset">Reset</button>
+                <button class="button-primary" on type="submit" name="button" id="delete">Delete</button>
             </div>
+            </form>
         </div>
     </div>
     <div class=" row displayInstruction">
-        <span id='plate'></span><span id="footer"></span>
+        <span id='plate'></span><span class="footer">{{#if messages.info}} {{messages.info}}{{/if}}</span>
     </div>
-
+   
     <div class="row">
-        <form class="col-8 moveToRight" action ='/city/towns' method = 'post'>
+        <form class="col-md-8 moveToRight" action='/city' method='post' class="searchTownForm" >
             <p>Select Town</p>
-            <select  id="townBox" name='towns' onchange="change()"> 
-                <option  value='all' {{selected}}>All</option>
-                {{#each myCity}}  
-                    <option value='{{town_name}}' {{selected}}>{{town_name}}</option>
-                {{/each}}   
-                {{!-- <option  value='Cape Town'>Cape Town</option>
-                <option  value='Bellville'>Bellville</option>
-                <option  value='Paarl'>Paarl</option>
-                <option  value='Stellenbosch'>Stellenbosch</option> --}}
-                {{!-- <input type = "submit" value="hidden"> --}}  
+            <select id="townBox" name='towns' onchange="submit()">
+                <option value='all'>All</option>
+                {{#each myCity}}
+                <option value='{{town_name}}' {{selected}}>{{town_name}}</option>
+                {{/each}}
             </select>
         </form>
     </div>
 </div>
 <div class="row">
-    <div class="col-8 displayReg">
-        <ul class="addHere">{{#each plates}}
+    <div class="col-md-8 displayReg">
+        <ul class="addHere">
+            {{#each plates}}
             <li>{{reg_number}}</li>
             {{/each}}
         </ul>
     </div>
 </div>
+ {{!-- Modal --}}
+    <div class='modal fade' id='formModal' tabindex="-1" role='dialog' aria-labelledby="formModalLabel">
+        <div class='modal-dialog' role='document'>
+            <div class='modal-content'>
+                <form action='/add' method='post'>
+                    <div class='modal-header'>
+                        {{!-- <button typ='button' class='close' data-dismiss='modal' aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class='modal-title' id='myModalLabel'>Add Town</h4> --}}
+                    </div>
+                    <div class='modal-body'>
+                        <div class="form-group">
+                            <label>Town Name</label>
+                            <input type="text" class='form-control' name='add_town'>
+                        </div>
+                        <div class="form-group">
+                            <label>Town Code</label>
+                            <input type="text" class='form-control' name='code'>
+                        </div>
+                    </div>
+                    <div class='modal-footer'>
+                        <button type="button" class='btn btn-default' data-dismiss="modal">Close</button>
+                        <button type='submit' class="btn btn-primary" value='save'>Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{!-- End Modal --}}
