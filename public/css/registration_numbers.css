@@ -91,6 +91,11 @@ html {
   float: right;
   clear: both;
 }
+.fa-trash-alt{
+  color: red;
+  background-color: white;
+  font-size: 12px;
+}
 @media only screen and (min-width: 768px) {
     /* For desktop: */
     .displayReg li{

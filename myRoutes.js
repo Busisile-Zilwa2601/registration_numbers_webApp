@@ -107,13 +107,25 @@ module.exports = function routes(cityRegNum) {
             console.error('Plates not deleted from database', err);
         }    
     }
+    async function deleteTown(req, res){
+        let townName = req.body.dtown;
+        console.log(townName);
+        try{
+            await cityRegNum.deletemyTown(townName);
+            req.flash('info', townName +' has been deleted from database');
+            res.redirect('/');
+        }catch(err){
+            console.error('Err deleting a town from database', err);
+        }
+    }
     //functions to use
     return {
         index,
         displayReg,
         add,
         addCity,
-        deleteAll
+        deleteAll, 
+        deleteTown
     }
 }
 //new helper.SafeString('selected = "'+ currentCity.selected +'"');

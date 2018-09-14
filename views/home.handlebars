@@ -27,19 +27,20 @@
                 </p>
                 <button class="button-primary" type="submit" name="button" id="addReg">Add </button>
             </form>
-            <form action='/delete' method = 'post'>
-            <div class="">
-                <button class="button-primary" on type="submit" name="button" id="delete">Delete</button>
-            </div>
+            <form action='/delete' method='post'>
+                <div class="">
+                    <button class="button-primary" on type="submit" name="button" id="delete">Delete</button>
+                </div>
             </form>
+            <button data-toggle='modal' data-target='#formModalDelete'>Delete town</button>
         </div>
     </div>
     <div class=" row displayInstruction">
-        <span id='plate'></span><span class="footer">{{#if messages.info}} {{messages.info}}{{/if}}</span>
+        <span id='plate'></span><span class="footer offset-4">{{#if messages.info}} {{messages.info}}{{/if}}</span>
     </div>
-   
+
     <div class="row">
-        <form class="col-md-8 moveToRight" action='/city' method='post' class="searchTownForm" >
+        <form class="col-md-8 moveToRight" action='/city' method='post' class="searchTownForm">
             <p>Select Town</p>
             <select id="townBox" name='towns' onchange="submit()">
                 <option value='all'>All</option>
@@ -59,32 +60,55 @@
         </ul>
     </div>
 </div>
- {{!-- Modal --}}
-    <div class='modal fade' id='formModal' tabindex="-1" role='dialog' aria-labelledby="formModalLabel">
-        <div class='modal-dialog' role='document'>
-            <div class='modal-content'>
-                <form action='/add' method='post'>
-                    <div class='modal-header'>
-                        {{!-- <button typ='button' class='close' data-dismiss='modal' aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h4 class='modal-title' id='myModalLabel'>Add Town</h4> --}}
+{{!-- Modal --}}
+<div class='modal fade' id='formModal' tabindex="-1" role='dialog' aria-labelledby="formModalLabel">
+    <div class='modal-dialog' role='document'>
+        <div class='modal-content'>
+            <form action='/add' method='post'>
+                <div class='modal-header'>
+                </div>
+                <div class='modal-body'>
+                    <div class="form-group">
+                        <label>Town Name</label>
+                        <input type="text" class='form-control' name='add_town'>
                     </div>
-                    <div class='modal-body'>
-                        <div class="form-group">
-                            <label>Town Name</label>
-                            <input type="text" class='form-control' name='add_town'>
-                        </div>
-                        <div class="form-group">
-                            <label>Town Code</label>
-                            <input type="text" class='form-control' name='code'>
-                        </div>
+                    <div class="form-group">
+                        <label>Town Code</label>
+                        <input type="text" class='form-control' name='code'>
                     </div>
-                    <div class='modal-footer'>
-                        <button type="button" class='btn btn-default' data-dismiss="modal">Close</button>
-                        <button type='submit' class="btn btn-primary" value='save'>Save</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class='modal-footer'>
+                    <button type="button" class='btn btn-default' data-dismiss="modal">Close</button>
+                    <button type='submit' class="btn btn-primary" value='save'>Save</button>
+                </div>
+            </form>
         </div>
     </div>
-    {{!-- End Modal --}}
+</div>
+{{!-- End Modal --}}
+
+{{!-- Modal Delete City --}}
+<div class='modal fade' id='formModalDelete' tabindex="-1" role='dialog' aria-labelledby="formModalLabel">
+    <div class='modal-dialog' role='document'>
+        <div class='modal-content'>
+            <form action='/delete_city' method='post'>
+                <div class='modal-header'>
+                </div>
+                <div class='modal-body'>
+                    <div class="">
+                        {{#each myCity}}
+                            <label><p style="max-height:15px;">{{town_name}}<button type='submit' style="margin-top:15px;" name='dtown' class="btn btn-default" value='{{town_name}}'><i class="fas fa-trash-alt "></i></button> </p>
+                            </label>
+                            <br/>
+                        {{/each}}
+                    </div>
+                </div>
+                <div class='modal-footer'>
+                    <button type="button" class='btn btn-default' data-dismiss="modal">Close</button>
+                    {{!-- <button type='submit' class="btn btn-primary" value='save'>Save</button> --}}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{!-- End Modal Delete--}}

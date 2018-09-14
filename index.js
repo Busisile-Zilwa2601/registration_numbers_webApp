@@ -53,9 +53,10 @@ app.use(bodyParser.json());
 app.get('/', myRoutes.index);
 app.post('/city', myRoutes.displayReg);
 app.post('/reg_numbers', myRoutes.add);
-app.get('/city', myRoutes.add);
+// app.get('/city', myRoutes.add);
 app.post('/add', myRoutes.addCity);
 app.post('/delete', myRoutes.deleteAll);
+app.post('/delete_city', myRoutes.deleteTown);
 
 //add the PORT
 let PORT = process.env.PORT || 3080;

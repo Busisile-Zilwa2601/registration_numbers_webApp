@@ -67,7 +67,9 @@ module.exports = function cityRegNum(pool){
     async function deleteAllReg(){
         await pool.query('delete from plates');
     }
-    
+    async function deletemyTown(townName){
+        await pool.query('delete from towns where town_name =$1', [townName]);
+    }
     return{
         all, 
         allFrom,
@@ -76,6 +78,7 @@ module.exports = function cityRegNum(pool){
         checkReg,
         checkTag,
         addTown,
-        deleteAllReg
+        deleteAllReg,
+        deletemyTown
     }
 }
