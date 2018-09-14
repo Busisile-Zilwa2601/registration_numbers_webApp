@@ -69,7 +69,7 @@ module.exports = function cityRegNum(pool){
         await pool.query('delete from plates');
     }
     async function deleteMyTown(townName){
-        await pool.query('delete from towns where town_name =$1', [townName.toUpperCase()]);
+        await pool.query('delete from towns where town_name =$1', [townName]);
     }
     return{
         all, 

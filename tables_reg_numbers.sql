@@ -8,7 +8,7 @@ create table plates( id serial not null primary key,
                      towns_id int, 
                      foreign key(towns_id) references towns(id) on DELETE CASCADE
 );
-INSERT INTO towns(town_name, town_code) VALUES('Cape Town', 'CA');
-INSERT INTO towns(town_name, town_code) VALUES('Bellville', 'CY');
-INSERT INTO towns(town_name, town_code) VALUES('Paarl', 'CJ');
-INSERT INTO towns(town_name, town_code) VALUES('Stellenbosch', 'CL');
+INSERT INTO towns(town_name, town_code) VALUES('CAPE TOWN', 'CA');
+INSERT INTO towns(town_name, town_code) VALUES('BELLVILLE', 'CY');
+INSERT INTO towns(town_name, town_code) VALUES('PAARL', 'CJ');
+INSERT INTO towns(town_name, town_code) VALUES('STELLENBOSCH', 'CL');
