@@ -44,7 +44,7 @@ module.exports = function routes(cityRegNum) {
         let regNum = req.body.registration_number;
         if (regNum !== '') {
             if (regValidate(regNum)) {
-                if (await cityRegNum.checkReg(regNum)) {
+                if (await cityRegNum.checkReg(regNum) && await cityRegNum.checkTag(regNum)){
                     try {
                         await cityRegNum.add(regNum);
                         req.flash('info', regNum + ' Added');
@@ -52,11 +52,13 @@ module.exports = function routes(cityRegNum) {
                     } catch (err) {
                         console.error('Can not add to the database', err);
                     }
-                } else {
+                }else if(await cityRegNum.checkTag(regNum)){
                     req.flash('info', regNum + ' already exist in the database');
                     res.redirect('/');
+                }else if(await cityRegNum.checkReg(regNum)){
+                    req.flash('info', regNum + ' Does not belong with a town in the database');
+                    res.redirect('/');
                 }
-
             } else {
                 req.flash('info', ' Invalid pattern');
                 res.redirect('/');
@@ -89,13 +91,25 @@ module.exports = function routes(cityRegNum) {
     async function addCity(req, res) {
         let tag = req.body.code;
         let cityAdded = req.body.add_town;
-        try {
-            await cityRegNum.addTown(cityAdded, tag);
-            await cityRegNum.cityAll();
+        if(tag !=='' && cityAdded !==''){
+            try {
+                if(await cityRegNum.checkTown(cityAdded.toUpperCase())){
+                    await cityRegNum.addTown(cityAdded, tag);
+                    await cityRegNum.cityAll();
+                    req.flash('info', cityAdded+' has been added');
+                    res.redirect('/');    
+                }else{
+                    req.flash('info', cityAdded+' already exist');
+                    res.redirect('/');
+                }   
+            } catch (err) {
+                console.error('error accessing database', err);
+            }
+        }else{
+            req.flash('info', ' Please anter a City Name and a City Registration Number Code');
             res.redirect('/');
-        } catch (err) {
-            console.error('error accessing database', err);
         }
+        
     }
     //Delete all registration plates
     async function deleteAll(req, res){
@@ -111,7 +125,7 @@ module.exports = function routes(cityRegNum) {
         let townName = req.body.dtown;
         console.log(townName);
         try{
-            await cityRegNum.deletemyTown(townName);
+            await cityRegNum.deleteMyTown(townName);
             req.flash('info', townName +' has been deleted from database');
             res.redirect('/');
         }catch(err){

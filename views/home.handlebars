@@ -43,7 +43,7 @@
         <form class="col-md-8 moveToRight" action='/city' method='post' class="searchTownForm">
             <p>Select Town</p>
             <select id="townBox" name='towns' onchange="submit()">
-                <option value='all'>All</option>
+                <option value='all'>ALL</option>
                 {{#each myCity}}
                 <option value='{{town_name}}' {{selected}}>{{town_name}}</option>
                 {{/each}}
