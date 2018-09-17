@@ -57,7 +57,7 @@ html {
 .displayInstruction{
   padding: 4.5px;
   margin: 7px;
-  border: 2px solid grey;
+  /* border: 2px solid grey; */
   border-radius: 5px;
   text-align: center;
   top:inherit;
@@ -73,14 +73,15 @@ html {
   text: center;
   font-family:"Times New Roman", Helvetica, cursive ,fantasy,Times, Arial;
   font-weight: 500;
-  font-size: 11px;
+  font-size: 15px;
   color: black;
 }
 .footer{
   margin-top: 5px;
   text-align: center;
   line-height: 20px;
-  font-size: 12px;
+  font-size: 15px;
+  color : red;
 }
 .fa-plus{
   color: black;
