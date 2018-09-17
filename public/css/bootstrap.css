@@ -159,14 +159,10 @@ sub {
 sup {
   top: -.5em;
 }
-
-a {
-  color: #007bff;
-  text-decoration: none;
-  background-color: transparent;
-  -webkit-text-decoration-skip: objects;
+button a{
+  height: 38px;
+  width: 155px;
 }
-
 a:hover {
   color: #0056b3;
   text-decoration: underline;
@@ -254,6 +250,7 @@ textarea {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
+  text-align: center;
 }
 
 button,

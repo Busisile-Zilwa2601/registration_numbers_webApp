@@ -11,7 +11,19 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class="appInstruction col-md-3">
+        
+        <div class="col-md-6">
+            <form action='/reg_numbers' method='post'>
+                <p>
+                    <span>Registration Number:<span>
+                            <input type="text" name="registration_number" class="inPutSize regNum" placeholder="Enter vehicle number plate"
+                                maxlength="11" />
+                </p>
+                <button class="button-primary" type="submit" name="button" id="addReg">Add </button>
+                <span class="button-primary row-clickable"  name="button" id="delete"><a href= '/delete'>Clear</a></span>
+            </form>
+        </div>
+        <div class="appInstruction col-md-5">
             <p>Tips:
                 <ul>
                     <li>Cape Town, the registration number starts with <span class="plates"><i>CA</i></span></li>
@@ -20,21 +32,6 @@
                     <li>Hermanus, the registration number starts with <span class="plates"><i>CEM</i></span></li>
                 </ul>
             </p>
-        </div>
-        <div class="col-md-8">
-            <form action='/reg_numbers' method='post'>
-                <p>
-                    <span>Registration Number:<span>
-                            <input type="text" name="registration_number" class="inPutSize regNum" placeholder="Enter vehicle number plate"
-                                maxlength="11" />
-                </p>
-                <button class="button-primary" type="submit" name="button" id="addReg">Add </button>
-            </form>
-            <form action='/delete' method='post'>
-                <div class="">
-                    <button class="button-primary" on type="submit" name="button" id="delete">Delete</button>
-                </div>
-            </form>
         </div>
     </div>
     <div class=" row displayInstruction">

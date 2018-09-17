@@ -4,7 +4,7 @@ module.exports = function routes(cityRegNum) {
         try {
             let plates = await cityRegNum.all();
             let myCity = await cityRegNum.cityAll();
-            req.flash('info',' ');
+            req.flash('info', ' ');
             res.render('home', {
                 plates,
                 myCity
@@ -47,13 +47,13 @@ module.exports = function routes(cityRegNum) {
                 if (await cityRegNum.checkReg(regNum) && await cityRegNum.checkTag(regNum)){
                     try {
                         await cityRegNum.add(regNum);
-                        req.flash('info', regNum + ' Added');
+                        // req.flash('info', regNum + ' Added');
                         res.redirect('/');
                     } catch (err) {
                         console.error('Can not add to the database', err);
                     }
                 }else if(await cityRegNum.checkTag(regNum)){
-                    req.flash('info', regNum + ' already exist in the database');
+                    req.flash('info', regNum + ' already exist in the database ');
                     res.redirect('/');
                 }else if(await cityRegNum.checkReg(regNum)){
                     req.flash('info', regNum + ' Does not belong with a town in the database');
